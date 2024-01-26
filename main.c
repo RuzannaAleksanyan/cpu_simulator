@@ -10,6 +10,7 @@ int main() {
 
     cpu_print_memory(&my_cpu);
     cpu_execute(&my_cpu, address);
+    cpu_print_registers(&my_cpu);
 
     // cpu_print_registers(&my_cpu);
 

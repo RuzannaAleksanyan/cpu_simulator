@@ -9,6 +9,24 @@ void alu_initialize(struct ALU* alu, struct CPU* parent_cpu) {
     alu->parent_cpu = parent_cpu;
 }
 
+void alu_add(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
+    if(op1_category == 3 && op2_category == 3) {
+        // alu_add_reg_reg(cpu, op1_value, op2_value);
+    } else if(op1_category == 3 && op2_category == 0) {
+        // alu_add_reg_mem(cpu, op1_value, op2_value);
+    } else if(op1_category == 3 && op2_category == 2) {
+        // alu_add_reg_lit(cpu, op1_value, op2_value);
+    } else if(op1_category == 0 && op2_category == 3) {
+        // alu_add_mem_reg(cpu, op1_value, op2_value);
+    } else if(op1_category == 0 && op2_category == 0) {
+        // alu_add_mem_mem(cpu, op1_value, op2_value);
+    } else if(op1_category  == 0 && op2_category == 2) {
+        // alu_add_mem_lit(cpu, op1_value, op2_value);
+    } else {
+        // Handle Invalid Operands
+    }
+}
+
 void alu_mov(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
     if(op1_category == 3 && op2_category == 3) {
         alu_mov_reg_reg(cpu, op1_value, op2_value);

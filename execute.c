@@ -19,7 +19,7 @@ void decode(struct CPU* cpu, short code) {
     if(instruction == MOV) {
         alu_mov(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == ADD) {
-        // alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
+        alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == SUB) {
         // alu_sub(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == MUL) {
