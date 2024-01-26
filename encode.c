@@ -19,7 +19,7 @@ int encode(struct CPU* cpu, const char* instruction, const char* op1, const char
     if(strcmp(op2, "") == 0) {
         if(encode_instruction(cpu, instruction, address) && encode_op1(cpu, op1, address)) {
             cpu->memory[address] = (cpu->memory[address] << 6) + 1;
-            return 0;
+            return 1;
         }
     }
 

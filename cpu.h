@@ -32,7 +32,9 @@ void cpu_initialize_labels(struct CPU* cpu);
 
 int cpu_load_from_file(struct CPU* cpu, const char* file_name);
 
-void cpu_execute(struct CPU* cpu);
+void cpu_execute(struct CPU* cpu, int address);
+
+void decode(struct CPU* cpu, short code);
 
 //
 int remove_brackets_and_replace_with_number(const char* input);
@@ -40,7 +42,7 @@ int convert_string_to_int(const char* str);
 int cpu_extract_labels(struct CPU* cpu, const char* file_name);
 
 char* cpu_trim(char* str);
-// int cpu_is_one_operand_instruction(const char* instruction);
+int cpu_is_one_operand_instruction(const char* instruction);
 
 int encode(struct CPU* cpu, const char* instruction, const char* op1, const char* op2, int address);
 int encode_instruction(struct CPU* cpu, const char* instruction, int address);

@@ -6,10 +6,10 @@ int main() {
 
     // cpu_print_labels(&my_cpu);
     
-    cpu_load_from_file(&my_cpu, "code.txt");
+    int address = cpu_load_from_file(&my_cpu, "code.txt");
 
     cpu_print_memory(&my_cpu);
-    cpu_execute(&my_cpu);
+    cpu_execute(&my_cpu, address);
 
     // cpu_print_registers(&my_cpu);
 

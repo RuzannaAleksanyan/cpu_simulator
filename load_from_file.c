@@ -175,7 +175,7 @@ int cpu_load_from_file(struct CPU* cpu, const char* file_name) {
 
             int val = encode(cpu, instruction, op1, op2, address);
             if (!val) {
-                return 0;
+                return -1;
             }
 
             ++address;
@@ -183,5 +183,5 @@ int cpu_load_from_file(struct CPU* cpu, const char* file_name) {
     }
 
     fclose(file);
-    return 1;
+    return address;
 }
