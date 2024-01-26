@@ -13,9 +13,6 @@ void cpu_print_memory(const struct CPU* cpu) {
     printf("Memory:\n");
 
     for (int i = 0; i < MEMORY_SIZE; ++i) {
-        // if(i == 4) {
-        //     return;
-        // }
         printf("Address %d: ", i);
         print_binary_16bits(cpu->memory[i]);
         printf("\n");

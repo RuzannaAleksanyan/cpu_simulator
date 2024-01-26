@@ -137,12 +137,7 @@ int encode_op2(struct CPU* cpu, const char* op2, int address) {
         } else {
             cpu->memory[address] = (cpu->memory[address] << 6) + ((memory_address << 2) + 0);
         }
-    } 
-    // else if(strcmp(op2, "") == 0) {
-    //     printf("1");
-    //     cpu->memory[address] = (cpu->memory[address] << 6) + ((0 << 2) + 1);
-    // } 
-    else {
+    } else {
         int integer = convert_string_to_int(op2);
         cpu->memory[address] = (cpu->memory[address] << 6) + ((integer << 2) + 2);
     }
