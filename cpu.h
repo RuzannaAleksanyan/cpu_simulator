@@ -32,7 +32,7 @@ void cpu_initialize_labels(struct CPU* cpu);
 
 int cpu_load_from_file(struct CPU* cpu, const char* file_name);
 
-// void cpu_execute(struct CPU* cpu);
+void cpu_execute(struct CPU* cpu);
 
 //
 int remove_brackets_and_replace_with_number(const char* input);

@@ -185,5 +185,3 @@ int cpu_load_from_file(struct CPU* cpu, const char* file_name) {
     fclose(file);
     return 1;
 }
-
-

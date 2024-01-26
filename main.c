@@ -9,7 +9,7 @@ int main() {
     cpu_load_from_file(&my_cpu, "code.txt");
 
     cpu_print_memory(&my_cpu);
-    // cpu_execute(&my_cpu);
+    cpu_execute(&my_cpu);
 
     // cpu_print_registers(&my_cpu);
 
