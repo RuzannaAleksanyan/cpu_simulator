@@ -10,10 +10,17 @@ void cpu_initialize(struct CPU* cpu) {
 
     cpu_initialize_registers(cpu);
     cpu_initialize_labels(cpu);
+    cpu_initialize_memory(cpu);
 
     char* file_name = "code.txt";
     FILE* file = fopen(file_name, "r");
     cpu_extract_labels(cpu, file_name);
+}
+
+void cpu_initialize_memory(struct CPU* cpu) {
+    for (int i = 0; i < MEMORY_SIZE; ++i) {
+        cpu->memory[i] = 0;
+    }
 }
 
 void cpu_initialize_labels(struct CPU* cpu) {
@@ -179,9 +186,6 @@ int cpu_load_from_file(struct CPU* cpu, const char* file_name) {
 
         int length = strlen(trimmed_line);
 
-        // cpu_extract_labels(cpu, file_name);
-        
-
         if (trimmed_line[length - 1] == ':') {
             continue;
         } else {
@@ -193,8 +197,6 @@ int cpu_load_from_file(struct CPU* cpu, const char* file_name) {
             
             char instruction[50], op1[50], op2[50];
             split_instruction(trimmed_line, instruction, op1, op2);
-            // ...
-            // printf("%s\n %s\n %s\n", instruction, op1, op2);
 
             int length = strlen(op1);
             if (op1[length - 1] == ',') {
@@ -202,9 +204,9 @@ int cpu_load_from_file(struct CPU* cpu, const char* file_name) {
             }
 
             int val = encode(cpu, instruction, op1, op2, address);
-            // if (!val) {
-            //     return 0;
-            // }
+            if (!val) {
+                return 0;
+            }
 
             ++address;
         }

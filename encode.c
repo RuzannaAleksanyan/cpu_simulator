@@ -7,7 +7,10 @@ int encode(struct CPU* cpu, const char* instruction, const char* op1, const char
     
     int val_inst = encode_instruction(cpu, instruction, address);
     int val_op1 = encode_op1(cpu, op1, address);
-    int val_op2 = val_op2 = encode_op2(cpu, op2, address);
+    int val_op2 = 0;
+    if(strcmp(op2, "") != 0) {
+        val_op2 = encode_op2(cpu, op2, address);
+    }
 
     if(val_inst && val_op1 && val_op2 && (strcmp(op2, "") != 0)) {
         return 1;
@@ -15,7 +18,7 @@ int encode(struct CPU* cpu, const char* instruction, const char* op1, const char
     
     if(strcmp(op2, "") == 0) {
         if(encode_instruction(cpu, instruction, address) && encode_op1(cpu, op1, address)) {
-            cpu->memory[address] = (cpu->memory[address] << 6);
+            cpu->memory[address] = (cpu->memory[address] << 6) + 1;
             return 0;
         }
     }
@@ -134,10 +137,12 @@ int encode_op2(struct CPU* cpu, const char* op2, int address) {
         } else {
             cpu->memory[address] = (cpu->memory[address] << 6) + ((memory_address << 2) + 0);
         }
-    } else if(strcmp(op2, "") == 0) {
-        printf("1");
-        cpu->memory[address] = (cpu->memory[address] << 6) + ((0 << 2) + 1);
-    } else {
+    } 
+    // else if(strcmp(op2, "") == 0) {
+    //     printf("1");
+    //     cpu->memory[address] = (cpu->memory[address] << 6) + ((0 << 2) + 1);
+    // } 
+    else {
         int integer = convert_string_to_int(op2);
         cpu->memory[address] = (cpu->memory[address] << 6) + ((integer << 2) + 2);
     }

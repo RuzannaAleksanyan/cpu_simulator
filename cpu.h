@@ -26,6 +26,7 @@ struct CPU {
 };
 
 void cpu_initialize(struct CPU* cpu);
+void cpu_initialize_memory(struct CPU* cpu);
 void cpu_initialize_registers(struct CPU* cpu);
 void cpu_initialize_labels(struct CPU* cpu);
 int cpu_load_from_file(struct CPU* cpu, const char* file_name);
