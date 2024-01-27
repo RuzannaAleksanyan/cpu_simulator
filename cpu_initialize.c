@@ -1,8 +1,8 @@
 #include "cpu.h"
 
 void cpu_initialize(struct CPU* cpu) {
-    cpu->cmp_flag = 0;
-    cpu->ip = 0;
+    cpu->cpu_flag = 0;
+    // cpu->ip = 0;
     alu_initialize(&cpu->alu, cpu);
 
     cpu_initialize_registers(cpu);

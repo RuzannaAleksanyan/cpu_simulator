@@ -30,6 +30,12 @@ void cpu_print_registers(const struct CPU* cpu) {
     printf("ECH: %d\n", cpu->registers.ECH);
     printf("ZA:  %d\n", cpu->registers.ZA);
     printf("\n");
+
+    printf("Flags:\n");
+    printf("SF: %d\n", (cpu->cpu_flag & (1 << 0)) ? 1 : 0); // Sign Flag
+    printf("ZF: %d\n", (cpu->cpu_flag & (1 << 1)) ? 1 : 0); // Zero Flag
+    printf("OF: %d\n", (cpu->cpu_flag & (1 << 2)) ? 1 : 0); // Overflow Flag
+    printf("DF: %d\n", (cpu->cpu_flag & (1 << 3)) ? 1 : 0); // Placeholder for an additional flag
 }
 
 void cpu_print_labels(const struct CPU* cpu) {
@@ -40,16 +46,6 @@ void cpu_print_labels(const struct CPU* cpu) {
         printf("Label %d: %s\n", i, cpu->labels[i]);
         ++i;
     }
-    
-
-    // for (int i = 0; i < MAX_SIZE_LABEL; ++i) {
-    //     // if(cpu->labels[i] == NULL) {
-    //     //     break;
-    //     // }
-    //     if (cpu->labels[i] != NULL) {
-    //         printf("Label %d: %s\n", i, cpu->labels[i]);
-    //     }
-    // }
 
     printf("\n");
 }

@@ -101,17 +101,6 @@ int cpu_extract_labels(struct CPU* cpu, const char* file_name) {
                 }
             }
 
-            // if (!duplicate) {
-            //     // Add the label to the CPU's labels array
-            //     if (label_count < MAX_SIZE_LABEL) {
-            //         cpu->labels[label_count] = strdup(label);
-            //         ++label_count;
-            //     } else {
-            //         fprintf(stderr, "error: Too many labels, increase MAX_SIZE_LABEL.\n");
-            //         break;
-            //     }
-            // }
-
             if (!duplicate) {
                 // Add the label to the CPU's labels array
                 if (label_count < MAX_SIZE_LABEL) {

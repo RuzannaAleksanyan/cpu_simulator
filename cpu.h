@@ -3,7 +3,6 @@
 
 #include "registers.h"
 #include "alu.h"
-#include "cu.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,12 +16,11 @@
 struct CPU {
     struct Register registers;
     struct ALU alu;
-    // struct CU cu;
     short memory[MEMORY_SIZE];
     // char* instruction_set[INSTRUCTION_COUNT];
     char* labels[MAX_SIZE_LABEL];
-    int cmp_flag;
-    int ip;
+    int cpu_flag;
+    // int ip;
 };
 
 void cpu_initialize(struct CPU* cpu);
@@ -34,7 +32,7 @@ int cpu_load_from_file(struct CPU* cpu, const char* file_name);
 
 void cpu_execute(struct CPU* cpu, int address);
 
-void decode(struct CPU* cpu, short code);
+int decode(struct CPU* cpu, short code);
 
 //
 int remove_brackets_and_replace_with_number(const char* input);

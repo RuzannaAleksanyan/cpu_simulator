@@ -77,23 +77,23 @@ int encode_op1(struct CPU* cpu, const char* op1, int address) {
     } else if(strcmp(op1, "ZA") == 0) {
         cpu->memory[address] = (cpu->memory[address] << 6) + ((ZA << 2) + 3);
     } else {
+        // Memory
         if(op1[0] == '[' && op1[strlen(op1) - 1] == ']') {
             int memory_address = remove_brackets_and_replace_with_number(op1);
             if(memory_address <= address) {
                 printf("error: Invalid Memory Address");
                 return 0;
             } else {
-                cpu->memory[address] = (cpu->memory[address] << 6) + ((memory_address << 2) + 0);
+                cpu->memory[address] = (cpu->memory[address] << 6) + (((memory_address) << 2) + 0);
             }
         } else {
+            // Label
             int flag = 0;
             int i = 0;
             while(cpu->labels[i] != NULL) {
-                // op1 == cpu->labels[i]
                 if(strcmp(op1, cpu->labels[i]) == 0) {
-                    // printf("1");
                     flag = 1;
-                    cpu->memory[address] = (cpu->memory[address] << 6) + ((i << 2) + 2);
+                    cpu->memory[address] = (cpu->memory[address] << 6) + ((address << 2) + 2);
                     break;
                 }
                 ++i;

@@ -65,8 +65,16 @@ void alu_or_mem_lit(struct CPU* cpu, int op1_value, int op2_value);
 
 void alu_not(struct CPU* cpu, int op1_value, int op1_category);
 
-// void alu_cmp(struct CPU* cpu, int op1_value, int op2_value);
-// void alu_jmp(struct CPU* cpu, const char* label);
+void alu_cmp(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category);
+void alu_cmp_reg_reg(struct CPU* cpu, int op1_value, int op2_value);
+void alu_cmp_reg_mem(struct CPU* cpu, int op1_value, int op2_value);
+void alu_cmp_reg_lit(struct CPU* cpu, int op1_value, int op2_value);
+void alu_cmp_mem_reg(struct CPU* cpu, int op1_value, int op2_value);
+void alu_cmp_mem_mem(struct CPU* cpu, int op1_value, int op2_value);
+void alu_cmp_mem_lit(struct CPU* cpu, int op1_value, int op2_value);
+
+int alu_jmp(struct CPU* cpu, int op1_value, int op1_category);
+
 // void alu_jg(struct CPU* cpu, const char* label);
 // void alu_jl(struct CPU* cpu, const char* label);
 // void alu_je(struct CPU* cpu, const char* label);

@@ -2,11 +2,214 @@
 #include "cpu.h"
 
 #include <stdio.h>
+#include <limits.h>
 
 enum Operand { AYB, BEN, GIM, DA, ECH, ZA};
 
 void alu_initialize(struct ALU* alu, struct CPU* parent_cpu) {
     alu->parent_cpu = parent_cpu;
+}
+
+int alu_jmp(struct CPU* cpu, int op1_value, int op1_category) {
+    int i = 0;
+    while(i != op1_value) {
+        ++i;
+    }
+
+    return i;
+}
+
+void set_cpu_flag(struct CPU* cpu, int value) {
+    // Clear all bits initially
+    cpu->cpu_flag = 0;
+    // Sign flag
+    if (value < 0) {
+        cpu->cpu_flag |= (1 << 0);
+    }
+
+    // Zero flag
+    if (value == 0) {
+        cpu->cpu_flag |= (1 << 1);
+    }
+
+    // Overflow flag
+    if (value > INT_MAX || value < INT_MIN) {
+        cpu->cpu_flag |= (1 << 2);
+    }
+}
+
+void alu_cmp(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
+    if(op1_category == 3 && op2_category == 3) {
+        alu_cmp_reg_reg(cpu, op1_value, op2_value);
+    } else if(op1_category == 3 && op2_category == 0) {
+        alu_cmp_reg_mem(cpu, op1_value, op2_value);
+    } else if(op1_category == 3 && op2_category == 2) {
+        alu_cmp_reg_lit(cpu, op1_value, op2_value);
+    } else if(op1_category == 0 && op2_category == 3) {
+        alu_cmp_mem_reg(cpu, op1_value, op2_value);
+    } else if(op1_category == 0 && op2_category == 0) {
+        alu_cmp_mem_mem(cpu, op1_value, op2_value);
+    } else if(op1_category  == 0 && op2_category == 2) {
+        alu_cmp_mem_lit(cpu, op1_value, op2_value);
+    } else {
+        // Handle Invalid Operands
+    }
+}
+
+void alu_cmp_reg_reg(struct CPU* cpu, int op1_value, int op2_value) {
+    int value1;
+    int value2;
+
+    switch (op1_value) {
+        case 0:
+            value1 = cpu->registers.AYB;
+            break;
+        case 1:
+            value1 = cpu->registers.BEN;
+            break;
+        case 2:
+            value1 = cpu->registers.GIM;
+            break;
+        case 3:
+            value1 = cpu->registers.DA;
+            break;
+        case 4:
+            value1 = cpu->registers.ECH;
+            break;
+        case 5:
+            value1 = cpu->registers.ZA;
+            break;
+        default:
+            // Handle invalid op1_value
+            return;
+    }
+
+    switch (op2_value) {
+        case 0:
+            value2 = cpu->registers.AYB;
+            break;
+        case 1:
+            value2 = cpu->registers.BEN;
+            break;
+        case 2:
+            value2 = cpu->registers.GIM;
+            break;
+        case 3:
+            value2 = cpu->registers.DA;
+            break;
+        case 4:
+            value2 = cpu->registers.ECH;
+            break;
+        case 5:
+            value2 = cpu->registers.ZA;
+            break;
+        default:
+            // Handle invalid op2_value
+            return;
+    }
+
+    set_cpu_flag(cpu, value1 - value2);
+}
+
+void alu_cmp_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
+    int value1;
+    int value2 = cpu->memory[op2_value];
+
+    switch (op1_value) {
+        case 0:
+            value1 = cpu->registers.AYB;
+            break;
+        case 1:
+            value1 = cpu->registers.BEN;
+            break;
+        case 2:
+            value1 = cpu->registers.GIM;
+            break;
+        case 3:
+            value1 = cpu->registers.DA;
+            break;
+        case 4:
+            value1 = cpu->registers.ECH;
+            break;
+        case 5:
+            value1 = cpu->registers.ZA;
+            break;
+        default:
+            // Handle invalid op2_value
+            return;
+    }
+
+    set_cpu_flag(cpu, value1 - value2);
+}
+
+void alu_cmp_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
+    int value1;
+    int value2 = op2_value;
+
+    switch (op1_value) {
+        case 0:
+            value2 = cpu->registers.AYB;
+            break;
+        case 1:
+            value2 = cpu->registers.BEN;
+            break;
+        case 2:
+            value2 = cpu->registers.GIM;
+            break;
+        case 3:
+            value2 = cpu->registers.DA;
+            break;
+        case 4:
+            value2 = cpu->registers.ECH;
+            break;
+        case 5:
+            value2 = cpu->registers.ZA;
+            break;
+        default:
+            // Handle invalid op2_value
+            return;
+    }
+
+    set_cpu_flag(cpu, value1 - value2);
+}
+
+void alu_cmp_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
+    int value1 = cpu->memory[op1_value];
+    int value2 = 0;
+
+    switch (op2_value) {
+        case 0:
+            value2 = cpu->registers.AYB;
+            break;
+        case 1:
+            value2 = cpu->registers.BEN;
+            break;
+        case 2:
+            value2 = cpu->registers.GIM;
+            break;
+        case 3:
+            value2 = cpu->registers.DA;
+            break;
+        case 4:
+            value2 = cpu->registers.ECH;
+            break;
+        case 5:
+            value2 = cpu->registers.ZA;
+            break;
+        default:
+            // Handle invalid op1_value
+            return;
+    }
+
+    set_cpu_flag(cpu, value1 - value2);
+}
+
+void alu_cmp_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
+    set_cpu_flag(cpu, cpu->memory[op1_value] - cpu->memory[op2_value]);
+}
+
+void alu_cmp_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
+    set_cpu_flag(cpu, cpu->memory[op1_value] - op2_value);
 }
 
 void alu_not(struct CPU* cpu, int op1_value, int op1_category) {
@@ -112,6 +315,8 @@ void alu_or_reg_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register |= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_or_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
@@ -143,6 +348,8 @@ void alu_or_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register |= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_or_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
@@ -174,6 +381,8 @@ void alu_or_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register |= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_or_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
@@ -204,14 +413,20 @@ void alu_or_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] |= value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_or_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] |= cpu->memory[op2_value];
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_or_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] |= op2_value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_and(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
@@ -285,6 +500,8 @@ void alu_and_reg_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register &= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_and_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
@@ -316,6 +533,8 @@ void alu_and_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register &= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_and_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
@@ -347,6 +566,8 @@ void alu_and_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register &= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_and_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
@@ -377,14 +598,20 @@ void alu_and_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] &= value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_and_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] &= cpu->memory[op2_value];
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_and_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] &= op2_value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_div(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
@@ -462,6 +689,8 @@ void alu_div_reg_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register /= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_div_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
@@ -497,6 +726,8 @@ void alu_div_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register /= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_div_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
@@ -532,6 +763,8 @@ void alu_div_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register /= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_div_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
@@ -566,6 +799,8 @@ void alu_div_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] /= value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_div_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
@@ -574,6 +809,8 @@ void alu_div_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] /= cpu->memory[op2_value];
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_div_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
@@ -582,6 +819,8 @@ void alu_div_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] /= op2_value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_mul(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
@@ -655,6 +894,8 @@ void alu_mul_reg_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register *= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_mul_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
@@ -686,6 +927,8 @@ void alu_mul_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register *= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_mul_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
@@ -717,6 +960,8 @@ void alu_mul_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register *= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_mul_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
@@ -747,14 +992,20 @@ void alu_mul_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] *= value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_mul_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] *= cpu->memory[op2_value];
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_mul_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] *= op2_value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_sub(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
@@ -828,6 +1079,8 @@ void alu_sub_reg_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register -= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_sub_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
@@ -859,6 +1112,8 @@ void alu_sub_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register -= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_sub_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
@@ -890,6 +1145,8 @@ void alu_sub_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register -= value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_sub_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
@@ -920,14 +1177,20 @@ void alu_sub_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] -= value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_sub_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] -= cpu->memory[op2_value];
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_sub_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] -= op2_value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_add(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
@@ -1001,6 +1264,8 @@ void alu_add_reg_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register += value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_add_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
@@ -1032,6 +1297,8 @@ void alu_add_reg_mem(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register += value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_add_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
@@ -1063,6 +1330,8 @@ void alu_add_reg_lit(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     *target_register += value;
+
+    set_cpu_flag(cpu, *target_register);
 }
 
 void alu_add_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
@@ -1093,14 +1362,20 @@ void alu_add_mem_reg(struct CPU* cpu, int op1_value, int op2_value) {
     }
 
     cpu->memory[op1_value] += value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_add_mem_mem(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] += cpu->memory[op2_value];
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_add_mem_lit(struct CPU* cpu, int op1_value, int op2_value) {
     cpu->memory[op1_value] += op2_value;
+
+    set_cpu_flag(cpu, cpu->memory[op1_value]);
 }
 
 void alu_mov(struct CPU* cpu, int op1_value, int op1_category, int op2_value, int op2_category) {
