@@ -125,7 +125,6 @@ int convert_string_to_int(const char* str) {
     return result;
 }
 
-
 int encode_op2(struct CPU* cpu, const char* op2, int address) {
     if(strcmp(op2, "AYB") == 0) {
         cpu->memory[address] = (cpu->memory[address] << 6) + ((AYB << 2) + 3);

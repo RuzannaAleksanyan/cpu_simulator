@@ -11,12 +11,70 @@ void alu_initialize(struct ALU* alu, struct CPU* parent_cpu) {
 }
 
 int alu_jmp(struct CPU* cpu, int op1_value, int op1_category) {
-    int i = 0;
-    // while(i != op1_value) {
-    //     ++i;
-    // }
+    return cpu->labels[op1_value].address;
+}
 
-    return i;
+int alu_jg(struct CPU* cpu, int op1_value, int op1_category) {
+    // !((OF ^ SF) || ZF)
+
+    if(op1_category != 2) {
+        // Handle Invalid Lable
+    }
+
+    int res = !(((cpu->cpu_flag & 4) ^ (cpu->cpu_flag & 1)) || (cpu->cpu_flag & 2));
+    if(res) {
+        return cpu->labels[op1_value].address;
+    }
+
+    return -1;
+}
+
+int alu_jl(struct CPU* cpu, int op1_value, int op1_category) {
+    // OF ^ SF
+    if(op1_category != 2) {
+        // Handle Invalid Lable
+    }
+
+    if(((cpu->cpu_flag & 4) ^ (cpu->cpu_flag & 1)) == 1) {
+        return cpu->labels[op1_value].address;
+    }
+
+    return -1;
+}
+
+int alu_je(struct CPU* cpu, int op1_value, int op1_category) {
+    // ZF
+    if(op1_category != 2) {
+        // Handle Invalid Lable
+    }
+
+    if((cpu->cpu_flag & 2) == 1) {
+        return cpu->labels[op1_value].address;
+    }
+
+    return -1;
+}
+
+void alu_print(struct CPU* cpu, int op1_value, int op1_category) {
+    if(op1_category == 3) {
+        switch (op1_value)
+        {
+        case AYB: printf("%d\n", cpu->registers.AYB);
+                break;
+        case BEN: printf("%d\n", cpu->registers.BEN);
+                break;
+        case GIM: printf("%d\n", cpu->registers.GIM);
+                break;
+        case DA: printf("%d\n", cpu->registers.DA);
+                break;
+        case ECH: printf("%d\n", cpu->registers.ECH);
+                break;
+        case ZA: printf("%d", cpu->registers.ZA);
+                break;
+        default:
+            break;
+        }
+    }
 }
 
 void set_cpu_flag(struct CPU* cpu, int value) {

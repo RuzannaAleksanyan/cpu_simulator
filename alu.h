@@ -74,11 +74,11 @@ void alu_cmp_mem_mem(struct CPU* cpu, int op1_value, int op2_value);
 void alu_cmp_mem_lit(struct CPU* cpu, int op1_value, int op2_value);
 
 int alu_jmp(struct CPU* cpu, int op1_value, int op1_category);
+int alu_jg(struct CPU* cpu, int op1_value, int op1_category);
+int alu_jl(struct CPU* cpu, int op1_value, int op1_category);
+int alu_je(struct CPU* cpu, int op1_value, int op1_category);
 
-// void alu_jg(struct CPU* cpu, const char* label);
-// void alu_jl(struct CPU* cpu, const char* label);
-// void alu_je(struct CPU* cpu, const char* label);
-// void alu_print(struct CPU* cpu, const char* reg);
+void alu_print(struct CPU* cpu, int op1_value, int op1_category);
 
 
 #endif  // _ALU

@@ -113,8 +113,10 @@ int cpu_extract_labels(struct CPU* cpu, const char* file_name) {
                     break;
                 }
             }
+        } else {
+            ++address;
         }
-        ++address;
+        
     }
 
     fclose(file);
