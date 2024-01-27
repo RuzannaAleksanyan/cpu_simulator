@@ -75,6 +75,7 @@ int cpu_extract_labels(struct CPU* cpu, const char* file_name) {
 
     char line[256];
     int label_count = 0;
+    int address = 0;
 
     while (fgets(line, sizeof(line), file)) {
         // remove whitespace
@@ -94,7 +95,7 @@ int cpu_extract_labels(struct CPU* cpu, const char* file_name) {
             // Check for duplicate labels
             int duplicate = 0;
             for (int i = 0; i < label_count; ++i) {
-                if (cpu->labels[i] != NULL && strcmp(cpu->labels[i], label) == 0) {
+                if (cpu->labels[i].name != NULL && strcmp(cpu->labels[i].name, label) == 0) {
                     printf("error: Duplicate label found: %s\n", label);
                     duplicate = 1;
                     break;
@@ -104,7 +105,8 @@ int cpu_extract_labels(struct CPU* cpu, const char* file_name) {
             if (!duplicate) {
                 // Add the label to the CPU's labels array
                 if (label_count < MAX_SIZE_LABEL) {
-                    cpu->labels[label_count] = strdup(label);
+                    cpu->labels[label_count].name = strdup(label);
+                    cpu->labels[label_count].address = address;
                     ++label_count;
                 } else {
                     fprintf(stderr, "error: Too many labels, increase MAX_SIZE_LABEL.\n");
@@ -112,6 +114,7 @@ int cpu_extract_labels(struct CPU* cpu, const char* file_name) {
                 }
             }
         }
+        ++address;
     }
 
     fclose(file);

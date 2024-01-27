@@ -22,7 +22,8 @@ void cpu_initialize_memory(struct CPU* cpu) {
 
 void cpu_initialize_labels(struct CPU* cpu) {
     for (int i = 0; i < MAX_SIZE_LABEL; ++i) {
-        cpu->labels[i] = NULL; // Set each entry to NULL initially
+        cpu->labels[i].name = NULL; 
+        cpu->labels[i].address = -1; 
     }
 }
 

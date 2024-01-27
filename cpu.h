@@ -13,12 +13,18 @@
 #define MEMORY_SIZE 16
 #define MAX_SIZE_LABEL 16
 
+struct Label {
+    char* name;
+    int address;
+};
+
 struct CPU {
     struct Register registers;
     struct ALU alu;
     short memory[MEMORY_SIZE];
     // char* instruction_set[INSTRUCTION_COUNT];
-    char* labels[MAX_SIZE_LABEL];
+    // char* labels[MAX_SIZE_LABEL];
+    struct Label labels[MAX_SIZE_LABEL];
     int cpu_flag;
     // int ip;
 };

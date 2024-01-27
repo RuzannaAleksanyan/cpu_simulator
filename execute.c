@@ -40,7 +40,7 @@ int decode(struct CPU* cpu, short code) {
     } else if(instruction == CMP) {
         alu_cmp(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == JMP) {
-        return alu_jmp(cpu, op1_value, op1_category);
+        // return alu_jmp(cpu, op1_value, op1_category);
     }
 
     return -1;

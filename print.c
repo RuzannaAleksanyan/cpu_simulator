@@ -42,10 +42,11 @@ void cpu_print_labels(const struct CPU* cpu) {
     printf("Labels:\n");
 
     int i = 0;
-    while (cpu->labels[i] != NULL) {
-        printf("Label %d: %s\n", i, cpu->labels[i]);
+    while (cpu->labels[i].name != NULL && cpu->labels[i].address != -1) {
+        printf("Label %d: %s %d\n", i, cpu->labels[i].name, cpu->labels[i].address);
         ++i;
     }
+    
 
     printf("\n");
 }

@@ -90,10 +90,10 @@ int encode_op1(struct CPU* cpu, const char* op1, int address) {
             // Label
             int flag = 0;
             int i = 0;
-            while(cpu->labels[i] != NULL) {
-                if(strcmp(op1, cpu->labels[i]) == 0) {
+            while(cpu->labels[i].name != NULL) {
+                if(strcmp(op1, cpu->labels[i].name) == 0) {
                     flag = 1;
-                    cpu->memory[address] = (cpu->memory[address] << 6) + ((address << 2) + 2);
+                    cpu->memory[address] = (cpu->memory[address] << 6) + ((i << 2) + 2);
                     break;
                 }
                 ++i;

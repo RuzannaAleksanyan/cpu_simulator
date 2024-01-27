@@ -12,9 +12,9 @@ void alu_initialize(struct ALU* alu, struct CPU* parent_cpu) {
 
 int alu_jmp(struct CPU* cpu, int op1_value, int op1_category) {
     int i = 0;
-    while(i != op1_value) {
-        ++i;
-    }
+    // while(i != op1_value) {
+    //     ++i;
+    // }
 
     return i;
 }
