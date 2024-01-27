@@ -10,38 +10,34 @@ void cpu_execute(struct CPU* cpu, int address) {
 }
 
 void decode(struct CPU* cpu, short code) {
-    int instruction = (code >> 12) & 0b11;   // 4 bit for instruction
+    int instruction = (code >> 12) & 0b1111;   // 4 bit for instruction
     int op1_value = (code >> 8) & 0b1111;   // 4 bits for op1 value
     int op1_category = (code >> 6) & 0b11;   // 2 bit for op1 category
     int op2_value = (code >> 2) & 0b1111;   // 4 bits for op2 value
     int op2_category = code & 0b11;         // 2 bits for op2 category
+
+    // printf("%d\n", instruction);
+    // printf("%d\n", op1_value);
+    // printf("%d\n", op1_category);
+    // printf("%d\n", op2_value);
+    // printf("%d\n", op2_category);
+    // return;
 
     if(instruction == MOV) {
         alu_mov(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == ADD) {
         alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == SUB) {
-        // alu_sub(cpu, op1_value, op1_category, op2_value, op2_category);
+        alu_sub(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == MUL) {
-        // alu_mul(cpu, op1_value, op1_category, op2_value, op2_category);
+        alu_mul(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == DIV) {
-        // alu_div(cpu, op1_value, op1_category, op2_value, op2_category);
+        alu_div(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == AND) {
-        // alu_and(cpu, op1_value, op1_category, op2_value, op2_category);
+        alu_and(cpu, op1_value, op1_category, op2_value, op2_category);
     } else if(instruction == OR) {
-        // alu_or(cpu, op1_value, op1_category, op2_value, op2_category);
-    } else if(instruction == CMP) {
-        // alu_cmp(cpu, op1_value, op1_category, op2_value, op2_category);
+        alu_or(cpu, op1_value, op1_category, op2_value, op2_category);
+    } else if(instruction == NOT) {
+        alu_not(cpu, op1_value, op1_category);
     } 
-    // else if(instruction == ADD) {
-    //     alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
-    // } else if(instruction == ADD) {
-    //     alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
-    // } else if(instruction == ADD) {
-    //     alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
-    // } else if(instruction == ADD) {
-    //     alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
-    // } else if(instruction == ADD) {
-    //     alu_add(cpu, op1_value, op1_category, op2_value, op2_category);
-    // }
 }

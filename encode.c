@@ -111,10 +111,20 @@ int encode_op1(struct CPU* cpu, const char* op1, int address) {
 }
 
 int convert_string_to_int(const char* str) {
-    int result = atoi(str);
-    
+    const char* res = str;
+    if (str[0] == '-') {
+        res = str + 1;
+    }
+    int result = atoi(res);
+
+    // If the original string was negative, make the result negative
+    if (str[0] == '-') {
+        result = 0 - result;
+    }
+
     return result;
 }
+
 
 int encode_op2(struct CPU* cpu, const char* op2, int address) {
     if(strcmp(op2, "AYB") == 0) {
