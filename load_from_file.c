@@ -24,18 +24,18 @@ char* cpu_trim(char* str) {
     return str;
 }
 
-int cpu_is_one_operand_instruction(const char* instruction) {
-    const char* one_operand_instructions[] = { "JMP", "JG", "JL", "JE", "PRINT" };
-    int num_instructions = sizeof(one_operand_instructions) / sizeof(one_operand_instructions[0]);
+// int cpu_is_one_operand_instruction(const char* instruction) {
+//     const char* one_operand_instructions[] = { "JMP", "JG", "JL", "JE", "PRINT" };
+//     int num_instructions = sizeof(one_operand_instructions) / sizeof(one_operand_instructions[0]);
 
-    for (int i = 0; i < num_instructions; ++i) {
-        if (strcmp(instruction, one_operand_instructions[i]) == 0) {
-            return 1;
-        }
-    }
+//     for (int i = 0; i < num_instructions; ++i) {
+//         if (strcmp(instruction, one_operand_instructions[i]) == 0) {
+//             return 1;
+//         }
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
 
 int remove_brackets_and_replace_with_number(const char* input) {
     int result = 0;

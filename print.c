@@ -36,6 +36,7 @@ void cpu_print_registers(const struct CPU* cpu) {
     printf("ZF: %d\n", (cpu->cpu_flag & (1 << 1)) ? 1 : 0); // Zero Flag
     printf("OF: %d\n", (cpu->cpu_flag & (1 << 2)) ? 1 : 0); // Overflow Flag
     printf("DF: %d\n", (cpu->cpu_flag & (1 << 3)) ? 1 : 0); // Placeholder for an additional flag
+    printf("\n");
 }
 
 void cpu_print_labels(const struct CPU* cpu) {
@@ -49,4 +50,10 @@ void cpu_print_labels(const struct CPU* cpu) {
     
 
     printf("\n");
+}
+
+void dump_memory(struct CPU* cpu) {
+    cpu_print_memory(cpu);
+    cpu_print_registers(cpu);
+    cpu_print_labels(cpu);
 }

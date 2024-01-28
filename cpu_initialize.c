@@ -2,7 +2,6 @@
 
 void cpu_initialize(struct CPU* cpu) {
     cpu->cpu_flag = 0;
-    // cpu->ip = 0;
     alu_initialize(&cpu->alu, cpu);
 
     cpu_initialize_registers(cpu);

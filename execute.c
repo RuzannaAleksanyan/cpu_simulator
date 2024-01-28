@@ -42,9 +42,9 @@ int decode(struct CPU* cpu, short code) {
     } else if(instruction == JMP) {
         return alu_jmp(cpu, op1_value, op1_category);
     } else if(instruction == JG) {
-        // return alu_jg(cpu, op1_value, op1_category);
+        return alu_jg(cpu, op1_value, op1_category);
     } else if(instruction == JL) {
-        // return alu_jl(cpu, op1_value, op1_category);
+        return alu_jl(cpu, op1_value, op1_category);
     } else if(instruction == JE) {
         return alu_je(cpu, op1_value, op1_category);
     } else if(instruction == PRINT) {

@@ -80,5 +80,4 @@ int alu_je(struct CPU* cpu, int op1_value, int op1_category);
 
 void alu_print(struct CPU* cpu, int op1_value, int op1_category);
 
-
 #endif  // _ALU
